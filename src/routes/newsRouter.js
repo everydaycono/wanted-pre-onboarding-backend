@@ -6,6 +6,7 @@ import {
   showSingleNews,
   updateSingleNews,
 } from '../controller/newsController.js';
+import { loginUserOnlyRoute } from '../middleware/loginUserOnly.middleware.js';
 
 /**
  * URL("/news")
@@ -24,7 +25,7 @@ router.get('/', showNews);
  * Handles the POST request to create news.
  */
 
-router.post('/', createNews);
+router.post('/', loginUserOnlyRoute, createNews);
 
 /**
  * GET /:id

@@ -14,6 +14,14 @@ export const errorHandler = (err, req, res, next) => {
     });
   }
 
+  // JWT error handle
+  if (err.name === 'JsonWebTokenError') {
+    return res.status(401).json({
+      message: err.message,
+      name: err.name,
+    });
+  }
+
   let customError = {
     statusCode: err.code || err.response?.status || 500,
     message: err.message || 'something went wrong',
