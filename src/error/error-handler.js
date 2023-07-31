@@ -15,7 +15,7 @@ export const errorHandler = (err, req, res, next) => {
   }
 
   let customError = {
-    statusCode: err.code || err.response.status || 500,
+    statusCode: err.code || err.response?.status || 500,
     message: err.message || 'something went wrong',
     name: err.name || 'Error',
   };
