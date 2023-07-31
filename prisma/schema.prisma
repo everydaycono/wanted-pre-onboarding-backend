@@ -16,4 +16,15 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  news      News[]
+}
+
+model News {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(100)
+  content   String   @db.VarChar(1000)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
