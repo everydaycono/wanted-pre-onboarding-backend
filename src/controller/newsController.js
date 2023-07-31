@@ -2,11 +2,42 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const showNews = (req, res) => {
-  res.send('SHOW NEWS!');
+export const showNews = async (req, res, next) => {
+  const { query } = req;
+  let paginationOptions = {
+    page: query?.page <= 0 ? 0 : query.page || 0,
+    limit: query?.limit || 10,
+    orederBy: query?.oreder || 'asc',
+  };
+  try {
+    const news = await prisma.news.findMany({
+      orderBy: {
+        createdAt: 'asc',
+      },
+      skip: paginationOptions.page * paginationOptions.limit,
+      take: paginationOptions.limit,
+      select: {
+        content: true,
+        id: true,
+        title: true,
+        createdAt: true,
+        authorEmail: true,
+      },
+    });
+
+    const totalCount = await prisma.news.count();
+
+    return res.status(200).json({
+      data: news,
+      count: news.length,
+      totalCount,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const createNews = async (req, res) => {
+export const createNews = async (req, res, next) => {
   const { title, content } = req.body;
 
   if (!title || !content) {
@@ -48,8 +79,27 @@ export const createNews = async (req, res) => {
   }
 };
 
-export const showSingleNews = (req, res) => {
-  res.send('Show Single NEWS');
+export const showSingleNews = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    // find news by id
+    const news = await prisma.news.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!news) {
+      return res.status(404).json({
+        message: 'News not found',
+      });
+    }
+
+    return res.status(200).json(news);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const updateSingleNews = (req, res) => {
