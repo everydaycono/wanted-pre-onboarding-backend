@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
+import apiRoutes from './routes/index.js';
+import { notFoundRouter } from './routes/not-found.router.js';
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -7,9 +9,8 @@ const PORT = process.env.PORT || 8000;
 // Create Prisma client instance.
 const prisma = new PrismaClient();
 
-app.get('/', (req, res) => {
-  res.send('wanted-pre-onboarding-backend!');
-});
+app.use('/api', apiRoutes);
+app.use(notFoundRouter);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT} now!`));
 
