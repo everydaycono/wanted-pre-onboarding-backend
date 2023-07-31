@@ -37,12 +37,12 @@ router.get('/:id', showSingleNews);
  * PUT /:id
  * Handles the PUT request to update a single news item by ID.
  */
-router.put('/:id', updateSingleNews);
+router.put('/:id', loginUserOnlyRoute, updateSingleNews);
 
 /**
  * DELETE /:id
  * Handles the DELETE request to delete a single news item by ID.
  */
-router.delete('/:id', deleteSingleNews);
+router.delete('/:id', loginUserOnlyRoute, deleteSingleNews);
 
 export default router;

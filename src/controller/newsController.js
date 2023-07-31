@@ -102,10 +102,73 @@ export const showSingleNews = async (req, res, next) => {
   }
 };
 
-export const updateSingleNews = (req, res) => {
-  res.send('Update Single NEWS');
+export const updateSingleNews = async (req, res, next) => {
+  const { id } = req.params;
+  const { title, content } = req.body;
+  const userEmail = req.userInfo.email;
+
+  if (!title && !content) {
+    return res.status(400).json({
+      message: 'title or content are required',
+    });
+  }
+
+  try {
+    // find news by id
+    const news = await prisma.news.findFirst({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    // only news owner can delete
+    if (news.authorEmail !== userEmail) {
+      return res.status(403).json({
+        message: "You don't have permission to delete this post.",
+      });
+    }
+    // only news owner can update
+    const updatedNews = await prisma.news.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        title,
+        content,
+      },
+    });
+    return res.status(200).json({
+      data: updatedNews,
+      message: 'News updated successfully.',
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const deleteSingleNews = (req, res) => {
-  res.send('Delete single NEWS');
+export const deleteSingleNews = async (req, res, next) => {
+  const { id } = req.params;
+  const userEmail = req.userInfo.email;
+
+  try {
+    // find news by id
+    const news = await prisma.news.findFirst({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    // only news owner can delete
+    if (news.authorEmail !== userEmail) {
+      return res.status(403).json({
+        message: "You don't have permission to delete this post.",
+      });
+    }
+
+    return res.status(200).json({
+      message: 'News deleted successfully',
+    });
+  } catch (error) {
+    next(error);
+  }
 };
