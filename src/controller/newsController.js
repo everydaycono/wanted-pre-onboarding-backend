@@ -25,6 +25,12 @@ export const showNews = async (req, res, next) => {
       },
     });
 
+    if (!news || news.length === 0) {
+      return res.status(404).json({
+        message: 'news not found.',
+      });
+    }
+
     const totalCount = await prisma.news.count();
 
     return res.status(200).json({
