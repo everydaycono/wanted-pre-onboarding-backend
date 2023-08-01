@@ -15,7 +15,7 @@ export const showNews = async (req, res, next) => {
         createdAt: 'asc',
       },
       skip: paginationOptions.page * paginationOptions.limit,
-      take: paginationOptions.limit,
+      take: parseInt(paginationOptions.limit),
       select: {
         content: true,
         id: true,
