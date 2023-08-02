@@ -7,12 +7,12 @@ export const showNews = async (req, res, next) => {
   let paginationOptions = {
     page: query?.page <= 0 ? 0 : query.page || 0,
     limit: query?.limit || 10,
-    orederBy: query?.oreder || 'asc',
+    orederBy: query?.order || 'asc',
   };
   try {
     const news = await prisma.news.findMany({
       orderBy: {
-        createdAt: 'asc',
+        createdAt: paginationOptions.orederBy,
       },
       skip: paginationOptions.page * paginationOptions.limit,
       take: parseInt(paginationOptions.limit),
@@ -117,6 +117,18 @@ export const updateSingleNews = async (req, res, next) => {
     return res.status(400).json({
       message: 'title or content are required',
     });
+  } // title, content length check
+  if (title && (title.length < 2 || title.length > 100)) {
+    return res.status(400).json({
+      message:
+        'title must be at least 2 characters and at most 100 characters.',
+    });
+  }
+  if (content && (content.length < 2 || content.length > 1000)) {
+    return res.status(400).json({
+      message:
+        'content must be at least 2 characters and at most 1000 characters.',
+    });
   }
 
   try {
@@ -130,7 +142,7 @@ export const updateSingleNews = async (req, res, next) => {
     // only news owner can delete
     if (news.authorEmail !== userEmail) {
       return res.status(403).json({
-        message: "You don't have permission to delete this post.",
+        message: "You don't have permission to update this post.",
       });
     }
     // only news owner can update

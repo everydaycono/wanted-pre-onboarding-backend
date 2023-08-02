@@ -24,7 +24,21 @@ app.use('/api', apiRoutes);
 app.use(notFoundRouter);
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT} now!`));
+const main = async () => {
+  try {
+    await prisma.$connect();
+    app.listen(PORT, () =>
+      console.log(`Server is running on port ${PORT} now!`)
+    );
+  } catch (error) {
+    console.log(error.message);
+    console.log('Server is not running');
+    await prisma.$disconnect();
+    process.exit();
+  }
+};
+
+main();
 
 // Signal Interrupt 발생 Prisma 클라이언트 연결을 해제합니다.
 process.on('SIGINT', async () => {
