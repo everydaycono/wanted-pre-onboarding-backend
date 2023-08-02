@@ -7,7 +7,7 @@ node_modules/
 
 # env files
 .env
-.env.*
+.env*.local
 
 # prisma migration
 prisma/migrations
