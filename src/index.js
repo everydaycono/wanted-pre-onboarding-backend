@@ -5,17 +5,17 @@ import apiRoutes from './routes/index.js';
 import { notFoundRouter } from './routes/not-found.router.js';
 import { errorHandler } from './error/error-handler.js';
 import prisma from '../db/db.js';
+import morgan from 'morgan';
+import cors from 'cors';
 
 const app = express();
-const PORT = 8000;
-// app.settings.env === 'development' ? process.env.PORT || 8000 : 8001;
-// app.settings.env === 8000;
+const PORT = process.env.PORT || 8000;
 
+app.use(cors());
 app.use(express.json());
+app.use(morgan('tiny'));
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+app.use('/', express.static('public'));
 app.use('/api', apiRoutes);
 
 // Error handler

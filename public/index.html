@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API 목록</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 20px;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .api-section {
+        margin-bottom: 30px;
+      }
+      .api-section h2 {
+        margin-bottom: 10px;
+      }
+      .api {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 15px;
+      }
+      .method {
+        font-weight: bold;
+      }
+      .endpoint {
+        font-family: monospace;
+        margin-bottom: 5px;
+      }
+      .description {
+        color: #666;
+      }
+      .curl-code {
+        font-family: monospace;
+        background-color: #f1f1f1;
+        padding: 10px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>API 목록</h1>
+
+    <div class="api-section">
+      <h2>Auth API 목록</h2>
+
+      <div class="api">
+        <div class="method">POST</div>
+        <div class="endpoint">/api/auth/signup</div>
+        <div class="description">1.회원가입 (Signup)</div>
+        <div class="curl-code">
+          curl -X POST http://your-api-domain/api/auth/signup
+        </div>
+      </div>
+
+      <div class="api">
+        <div class="method">POST</div>
+        <div class="endpoint">/api/auth/signin</div>
+        <div class="description">2.로그인 (Signin)</div>
+        <div class="curl-code">
+          curl -X POST http://your-api-domain/api/auth/signin
+        </div>
+      </div>
+    </div>
+
+    <div class="api-section">
+      <h2>게시판 API 목록</h2>
+
+      <div class="api">
+        <div class="method">GET</div>
+        <div class="endpoint">/api/news</div>
+        <div class="description">1.게시판 리스트</div>
+        <div class="curl-code">curl -X GET http://your-api-domain/api/news</div>
+      </div>
+
+      <div class="api">
+        <div class="method">POST</div>
+        <div class="endpoint">/api/news</div>
+        <div class="description">2.게시판 생성</div>
+        <div class="curl-code">
+          curl -X POST http://your-api-domain/api/news
+        </div>
+      </div>
+
+      <div class="api">
+        <div class="method">GET</div>
+        <div class="endpoint">/api/news/:id</div>
+        <div class="description">3.single 게시판</div>
+        <div class="curl-code">
+          curl -X GET http://your-api-domain/api/news/:id
+        </div>
+      </div>
+
+      <div class="api">
+        <div class="method">PUT</div>
+        <div class="endpoint">/api/news/:id</div>
+        <div class="description">4.single 게시판 업데이트</div>
+        <div class="curl-code">
+          curl -X PUT http://your-api-domain/api/news/:id
+        </div>
+      </div>
+
+      <div class="api">
+        <div class="method">DELETE</div>
+        <div class="endpoint">/api/news/:id</div>
+        <div class="description">5.single 게시판 삭제</div>
+        <div class="curl-code">
+          curl -X DELETE http://your-api-domain/api/news/:id
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
