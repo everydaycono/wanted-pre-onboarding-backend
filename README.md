@@ -6,75 +6,153 @@
 
 ## 애플리케이션 실행 방법
 
-#### 1. repository 복제
+- Docker
+- Node.js
 
-```bash
-git clone https://github.com/everydaycono/pre-onboarding.git
-```
+#### Docker 로 프로젝트 실행하기.
 
-#### 2. 패키지 설치
+1. docker 가 다운로되어 있어야합니다.
+2. 프리온보딩 프로젝트를 위한 폴더 생성 `mkdir cono-preonboarding`
+3. 폴더 cono-preonboarding 로 이동 `cd cono-preonboarding`
+4. cono-preonboarding 폴더에서 , `docker-compose.yml` 파일에 아래 코드를 생성
 
-```bash
-yarn install
-```
+   ```
+   version: '3.7'
+   services:
+    cono-mysql:
+      container_name: cono-mysql
+      image: everydaycono/wanted-preonboarding
+      environment:
+        MYSQL_ROOT_PASSWORD: rootpassword123
+        MYSQL_DATABASE: wanted-pre-onboarding
+        MYSQL_USER: boarding
+        MYSQL_PASSWORD: password123
+      ports:
+        - '3306:3306'
+      networks:
+        - net_pre
+    cono-app:
+      container_name: cono-app
+      image: everydaycono/wanted-preonboarding-app
+      env_file:
+        - .env
+      ports:
+        - '8000:8000'
+      restart: on-failure:6
+      depends_on:
+        - cono-mysql
+      networks:
+        - net_pre
+   networks:
+    net_pre:
 
-#### 3. 아래 명령어로 .env.example 파일을 복사해서 .env 파일을 업데이트 하세요.
+   ```
 
-```bash
-cp .env.example .env
-```
+5. .env 파일 생성 (docker-compose.yml 과 같은 파일위치.)
 
-프로젝트를 실행시키기 위해서는 .env 파일에 아래 environment variables 들이 필요합니다.
+   ```
+   # DATABASE_URL= "mysql://{USERNAME}:{ROOPASSWORD}@{HOST}:{PORT}/{DBBANE}"
+   #DATABASE_URL 을 위처럼 작성하셔야 합니다.
 
-```
-DATABASE_URL
-DATABASE_MYSQL_ROOT_PASSWORD
-DATABASE_MYSQL_DATABASE
-DATABASE_MYSQL_USER
-DATABASE_MYSQL_PASSWORD
-JWT_SECRET
-```
+   DATABASE_URL= "mysql://root:rootpassword123@cono-mysql:3306/wanted-pre-onboarding"
 
-#### 4. Migrate Database with Prisma
+   PORT=8000
 
-```bash
-npx prisma generate
-```
+   JWT_SECRET="JWT SECRET"
+   ```
 
-#### 5. Generate the Prisma Client
+6. docker hub 에서 이미지 가져오기 docker pull images [docker hub 링크](https://hub.docker.com/u/everydaycono)
 
-```bash
-npx prisma generate
-```
+   ```
+   1.node.js 이미지 docker pull
+     - docker pull everydaycono/wanted-preonboarding-app
+   2.mysql8.0 이미지 docker pull
+    - docker pull everydaycono/wanted-preonboarding
+   ```
 
-#### 6. Start the server
+7. DB 실행
 
-```bash
-yarn start
-```
+   ```
+   docker compose up cono-mysql
+   ```
 
-터미널에 아래 문구가 뜨는것을 볼수있습니다.
-<br/>
+8. node.js 실행
 
-```
-Server is running on port 8000 now!
-```
+   ```
+   docker compose up cono-app
+   ```
 
-http://localhost:8000 을 접속하게 되면 아래 문구를 볼수있습니다.
+   터미널에 아래 문구가 뜨는것을 볼수있습니다.
 
-```
-Hello, World!
-```
+   `Server is running on port 8000 now!`
 
-#### ❌오류❌ 터미널에 아래 문구가 뜬다면 서버에 접속이 실패 했습니다.
+#### node.js
 
-```
-Server is not running
-```
+1.  repository 복제
 
-> #### 잠재 이슈
->
-> - DB 연결문제.
+    ```bash
+    git clone https://github.com/everydaycono/pre-onboarding.git
+    ```
+
+2.  패키지 설치
+
+    ```bash
+    yarn install
+    ```
+
+3.  아래 명령어로 .env.example 파일을 복사해서 .env 파일을 업데이트 하세요.
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    프로젝트를 실행시키기 위해서는 .env 파일에 아래 environment variables 들이 필요합니다.
+
+    ```.env
+    DATABASE_URL= "mysql://{USERNAME}:{ROOPASSWORD}@{HOST}:{PORT}/{DBBANE}"
+
+    PORT=8000
+
+    JWT_SECRET="JWT SECRET"
+    ```
+
+4.  Migrate Database with Prisma
+
+    ```bash
+    npx prisma migrate deploy
+    ```
+
+5.  Generate the Prisma Client
+
+    ```bash
+    npx prisma generate
+    ```
+
+6.  Start the server
+
+    ```bash
+    yarn start
+    * yarn start 를 실행하면
+    * prestart 명령어를 통해서 prisma migrate deploy 를 먼저 실행합니다.
+    ```
+
+    터미널에 아래 문구가 뜨는것을 볼수있습니다.
+
+    ```
+    Server is running on port 8000 now!
+    ```
+
+    http://localhost:8000 을 접속하게 되면 API 를 설명하는 화면을 볼수있습니다.
+
+7.  ❌오류❌ 터미널에 아래 문구가 뜬다면 서버에 접속이 실패 했습니다.
+
+    잠재 이슈
+
+    - DB 연결문제.
+
+    ```
+    Server is not running
+    ```
 
 ## 데이터베이스 테이블 구조
 
@@ -408,12 +486,7 @@ curl --request PUT http://localhost:8000/api/auth/news/:id \
 
 ```bash
 curl --request DELETE http://localhost:8000/api/auth/news/:id \
---header "Content-Type: application/json" \
 --header 'Authorization: Bearer Token' \
---data-raw '{
-    "title": "Title",
-    "content": "Conetnet"
-}'
 ```
 
 성공 | `Status 200`
@@ -439,3 +512,7 @@ curl --request DELETE http://localhost:8000/api/auth/news/:id \
   "message": "오류 메시지 설명"
 }
 ```
+
+### 배포 URL
+
+AWS 배포 url : http://3.39.231.235:8000/

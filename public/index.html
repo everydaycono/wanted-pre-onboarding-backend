@@ -53,7 +53,17 @@
         <div class="endpoint">/api/auth/signup</div>
         <div class="description">1.회원가입 (Signup)</div>
         <div class="curl-code">
-          curl -X POST http://your-api-domain/api/auth/signup
+          <code>
+            <b> curl -X POST </b> /api/auth/signup
+            <br />
+            <span style="margin-left: 20px">
+              --header "Content-Type: application/json" \
+            </span>
+            <br />
+            <span style="margin-left: 20px">
+              --data-raw '{ "email": "test@test.com", "password": "password" }'
+            </span>
+          </code>
         </div>
       </div>
 
@@ -62,7 +72,17 @@
         <div class="endpoint">/api/auth/signin</div>
         <div class="description">2.로그인 (Signin)</div>
         <div class="curl-code">
-          curl -X POST http://your-api-domain/api/auth/signin
+          <code>
+            <b> curl -X POST </b> /api/auth/signin
+            <br />
+            <span style="margin-left: 20px">
+              --header "Content-Type: application/json" \
+            </span>
+            <br />
+            <span style="margin-left: 20px">
+              --data-raw '{ "email": "test@test.com", "password": "password" }'
+            </span>
+          </code>
         </div>
       </div>
     </div>
@@ -74,7 +94,49 @@
         <div class="method">GET</div>
         <div class="endpoint">/api/news</div>
         <div class="description">1.게시판 리스트</div>
-        <div class="curl-code">curl -X GET http://your-api-domain/api/news</div>
+        <div class="curl-code">
+          <code> <b> curl -X GET </b> /api/news </code>
+        </div>
+        <table
+          style="border-collapse: collapse; width: 100%; text-align: center"
+        >
+          <tr style="border: 1px solid #dddddd; background-color: #f2f2f2">
+            <th style="border: 1px solid #dddddd; padding: 8px">Body</th>
+            <th style="border: 1px solid #dddddd; padding: 8px">Type</th>
+            <th style="border: 1px solid #dddddd; padding: 8px">Required</th>
+            <th style="border: 1px solid #dddddd; padding: 8px">Description</th>
+          </tr>
+          <tr style="border: 1px solid #dddddd">
+            <td style="border: 1px solid #dddddd; padding: 8px">page</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">string</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              <i>optional</i>
+            </td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              <i>[기본값 = 0]</i> page 작성해줍니다.
+            </td>
+          </tr>
+          <tr style="border: 1px solid #dddddd">
+            <td style="border: 1px solid #dddddd; padding: 8px">limit</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">string</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              <i>optional</i>
+            </td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              <i>[기본값 = 10]</i> 몇개의 records를 가져오는지 결정합니다.
+            </td>
+          </tr>
+          <tr style="border: 1px solid #dddddd">
+            <td style="border: 1px solid #dddddd; padding: 8px">orederBy</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">string</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              <i>optional</i>
+            </td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              <i>[기본값 = asc]</i> asc,desc (오름차순,내림차순)
+            </td>
+          </tr>
+        </table>
       </div>
 
       <div class="api">
@@ -82,8 +144,52 @@
         <div class="endpoint">/api/news</div>
         <div class="description">2.게시판 생성</div>
         <div class="curl-code">
-          curl -X POST http://your-api-domain/api/news
+          <code>
+            <b> curl -X POST </b> /api/auth/news
+            <br />
+            <span style="margin-left: 20px">
+              --header "Content-Type: application/json" \
+            </span>
+            <br />
+            <span style="margin-left: 20px">
+              --header 'Authorization: Bearer Token' \
+            </span>
+            <br />
+            <span style="margin-left: 20px">
+              --data-raw '{ "title": "Title", "content": "Conetnet" }'
+            </span>
+          </code>
         </div>
+        <table
+          style="border-collapse: collapse; width: 100%; text-align: center"
+        >
+          <tr style="border: 1px solid #dddddd; background-color: #f2f2f2">
+            <th style="border: 1px solid #dddddd; padding: 8px">Body</th>
+            <th style="border: 1px solid #dddddd; padding: 8px">Type</th>
+            <th style="border: 1px solid #dddddd; padding: 8px">Required</th>
+            <th style="border: 1px solid #dddddd; padding: 8px">Description</th>
+          </tr>
+          <tr style="border: 1px solid #dddddd">
+            <td style="border: 1px solid #dddddd; padding: 8px">title</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">string</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              <i>Required</i>
+            </td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              게시판의 title 입니다. (최소2 글자 최대 100글자 입니다)
+            </td>
+          </tr>
+          <tr style="border: 1px solid #dddddd">
+            <td style="border: 1px solid #dddddd; padding: 8px">content</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">string</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              <i>Required</i>
+            </td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              게시판의 content 입니다. (최소2 글자 최대 1000글자 입니다)
+            </td>
+          </tr>
+        </table>
       </div>
 
       <div class="api">
@@ -91,7 +197,7 @@
         <div class="endpoint">/api/news/:id</div>
         <div class="description">3.single 게시판</div>
         <div class="curl-code">
-          curl -X GET http://your-api-domain/api/news/:id
+          <code> <b> curl -X GET </b> /api/news/:id </code>
         </div>
       </div>
 
@@ -100,8 +206,52 @@
         <div class="endpoint">/api/news/:id</div>
         <div class="description">4.single 게시판 업데이트</div>
         <div class="curl-code">
-          curl -X PUT http://your-api-domain/api/news/:id
+          <code>
+            <b> curl -X PUT </b> /api/auth/news/:id
+            <br />
+            <span style="margin-left: 20px">
+              --header "Content-Type: application/json" \
+            </span>
+            <br />
+            <span style="margin-left: 20px">
+              --header 'Authorization: Bearer Token' \
+            </span>
+            <br />
+            <span style="margin-left: 20px">
+              --data-raw '{ "title": "Title", "content": "Conetnet" }'
+            </span>
+          </code>
         </div>
+        <table
+          style="border-collapse: collapse; width: 100%; text-align: center"
+        >
+          <tr style="border: 1px solid #dddddd; background-color: #f2f2f2">
+            <th style="border: 1px solid #dddddd; padding: 8px">Body</th>
+            <th style="border: 1px solid #dddddd; padding: 8px">Type</th>
+            <th style="border: 1px solid #dddddd; padding: 8px">Required</th>
+            <th style="border: 1px solid #dddddd; padding: 8px">Description</th>
+          </tr>
+          <tr style="border: 1px solid #dddddd">
+            <td style="border: 1px solid #dddddd; padding: 8px">title</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">string</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              <i>Required</i>
+            </td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              게시판의 title 입니다. (최소2 글자 최대 100글자 입니다)
+            </td>
+          </tr>
+          <tr style="border: 1px solid #dddddd">
+            <td style="border: 1px solid #dddddd; padding: 8px">content</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">string</td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              <i>Required</i>
+            </td>
+            <td style="border: 1px solid #dddddd; padding: 8px">
+              게시판의 content 입니다. (최소2 글자 최대 1000글자 입니다)
+            </td>
+          </tr>
+        </table>
       </div>
 
       <div class="api">
@@ -109,7 +259,13 @@
         <div class="endpoint">/api/news/:id</div>
         <div class="description">5.single 게시판 삭제</div>
         <div class="curl-code">
-          curl -X DELETE http://your-api-domain/api/news/:id
+          <code>
+            <b> curl -X DELETE </b> /api/auth/news/:id
+            <br />
+            <span style="margin-left: 20px">
+              --header 'Authorization: Bearer Token' \
+            </span>
+          </code>
         </div>
       </div>
     </div>
