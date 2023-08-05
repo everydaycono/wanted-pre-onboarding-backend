@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../db/db.js';
 
 export const showNews = async (req, res, next) => {
   const { query } = req;

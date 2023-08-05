@@ -2,16 +2,14 @@ import 'dotenv/config';
 
 import express from 'express';
 import apiRoutes from './routes/index.js';
-import { PrismaClient } from '@prisma/client';
 import { notFoundRouter } from './routes/not-found.router.js';
 import { errorHandler } from './error/error-handler.js';
+import prisma from '../db/db.js';
 
 const app = express();
-const PORT =
-  app.settings.env === 'development' ? process.env.PORT || 8000 : 8001;
-
-// Create Prisma client instance.
-const prisma = new PrismaClient();
+const PORT = 8000;
+// app.settings.env === 'development' ? process.env.PORT || 8000 : 8001;
+// app.settings.env === 8000;
 
 app.use(express.json());
 

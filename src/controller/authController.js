@@ -1,9 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import { validateEmail } from '../utils/validation.js';
+import prisma from '../../db/db.js';
 
-const prisma = new PrismaClient();
 export const signup = async (req, res, next) => {
   const { email, password } = req.body;
 
