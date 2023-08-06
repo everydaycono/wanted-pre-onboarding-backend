@@ -17,10 +17,18 @@
    mkdir cono-preonboarding
    ```
 3. 폴더 cono-preonboarding 로 이동
+
    ```
    cd cono-preonboarding
    ```
-4. cono-preonboarding 폴더에서 , `docker-compose.yml` 파일에 아래 코드를 생성
+
+4. docker-compose.yml 파일 생성
+
+   ```
+   touch docker-compose.yml
+   ```
+
+5. cono-preonboarding 폴더에서 , `docker-compose.yml` 파일에 아래 코드를 생성
 
    ```
    version: '3.7'
@@ -54,13 +62,13 @@
 
    ```
 
-5. .env 파일 생성 (docker-compose.yml 과 같은 파일위치.)
+6. .env 파일 생성 (docker-compose.yml 과 같은 파일위치.)
 
    ```
    touch .env
    ```
 
-6. .env 파일 에 아래 코드 복사
+7. .env 파일 에 아래 코드 복사
 
    ```
    # DATABASE_URL= "mysql://{USERNAME}:{ROOPASSWORD}@{HOST}:{PORT}/{DBBANE}"
@@ -73,7 +81,7 @@
    JWT_SECRET="JWT SECRET"
    ```
 
-7. docker hub 에서 이미지 가져오기 docker pull images [docker hub 링크](https://hub.docker.com/u/everydaycono)
+8. docker hub 에서 이미지 가져오기 docker pull images [docker hub 링크](https://hub.docker.com/u/everydaycono)
 
    1.node.js 이미지 docker pull
 
@@ -87,21 +95,21 @@
    docker pull everydaycono/wanted-preonboarding
    ```
 
-8. DB 실행
+9. DB 실행
 
    ```
    docker compose up cono-mysql
    ```
 
-9. 어플리케이션 실행
+10. 어플리케이션 실행
 
-   ```
-   docker compose up cono-app
-   ```
+    ```
+    docker compose up cono-app
+    ```
 
-   터미널에 아래 문구가 뜨는것을 볼수있습니다.
+    터미널에 아래 문구가 뜨는것을 볼수있습니다.
 
-   `Server is running on port 8000 now!`
+    `Server is running on port 8000 now!`
 
 #### node.js
 
