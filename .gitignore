@@ -12,7 +12,6 @@ node_modules/
 .env*.local
 
 # prisma migration
-prisma/migrations
 
 docker-compose.yml
 production.yml
