@@ -12,8 +12,14 @@
 #### Docker 로 프로젝트 실행하기.
 
 1. docker 가 다운로되어 있어야합니다.
-2. 프리온보딩 프로젝트를 위한 폴더 생성 `mkdir cono-preonboarding`
-3. 폴더 cono-preonboarding 로 이동 `cd cono-preonboarding`
+2. 프리온보딩 프로젝트를 위한 폴더 생성
+   ```
+   mkdir cono-preonboarding
+   ```
+3. 폴더 cono-preonboarding 로 이동
+   ```
+   cd cono-preonboarding
+   ```
 4. cono-preonboarding 폴더에서 , `docker-compose.yml` 파일에 아래 코드를 생성
 
    ```
@@ -51,6 +57,12 @@
 5. .env 파일 생성 (docker-compose.yml 과 같은 파일위치.)
 
    ```
+   touch .env
+   ```
+
+6. .env 파일 에 아래 코드 복사
+
+   ```
    # DATABASE_URL= "mysql://{USERNAME}:{ROOPASSWORD}@{HOST}:{PORT}/{DBBANE}"
    #DATABASE_URL 을 위처럼 작성하셔야 합니다.
 
@@ -61,22 +73,27 @@
    JWT_SECRET="JWT SECRET"
    ```
 
-6. docker hub 에서 이미지 가져오기 docker pull images [docker hub 링크](https://hub.docker.com/u/everydaycono)
+7. docker hub 에서 이미지 가져오기 docker pull images [docker hub 링크](https://hub.docker.com/u/everydaycono)
 
-   ```
    1.node.js 이미지 docker pull
-     - docker pull everydaycono/wanted-preonboarding-app
-   2.mysql8.0 이미지 docker pull
-    - docker pull everydaycono/wanted-preonboarding
+
+   ```
+   docker pull everydaycono/wanted-preonboarding-app
    ```
 
-7. DB 실행
+   2.mysql8.0 이미지 docker pull
+
+   ```
+   docker pull everydaycono/wanted-preonboarding
+   ```
+
+8. DB 실행
 
    ```
    docker compose up cono-mysql
    ```
 
-8. node.js 실행
+9. 어플리케이션 실행
 
    ```
    docker compose up cono-app
@@ -106,7 +123,7 @@
     cp .env.example .env
     ```
 
-    프로젝트를 실행시키기 위해서는 .env 파일에 아래 environment variables 들이 필요합니다.
+4.  프로젝트를 실행시키기 위해서는 .env 파일에 아래 environment variables 들이 필요합니다.
 
     ```.env
     DATABASE_URL= "mysql://{USERNAME}:{ROOPASSWORD}@{HOST}:{PORT}/{DBBANE}"
@@ -116,19 +133,19 @@
     JWT_SECRET="JWT SECRET"
     ```
 
-4.  Migrate Database with Prisma
+5.  프리즈마 마이그레이션 명령어
 
     ```bash
     npx prisma migrate deploy
     ```
 
-5.  Generate the Prisma Client
+6.  프리즈마 generate 명령어
 
     ```bash
     npx prisma generate
     ```
 
-6.  Start the server
+7.  어플리케이션 시작.
 
     ```bash
     yarn start
@@ -144,7 +161,7 @@
 
     http://localhost:8000 을 접속하게 되면 API 를 설명하는 화면을 볼수있습니다.
 
-7.  ❌오류❌ 터미널에 아래 문구가 뜬다면 서버에 접속이 실패 했습니다.
+8.  ❌오류❌ 터미널에 아래 문구가 뜬다면 서버에 접속이 실패 했습니다.
 
     잠재 이슈
 
