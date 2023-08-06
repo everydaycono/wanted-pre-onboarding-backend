@@ -6,112 +6,11 @@
 
 ## 애플리케이션 실행 방법
 
-- Docker
-- Node.js
+- [Node.js 환경 으로 프로젝트 실행하기](#nodejs-환경-으로-프로젝트-실행하기)
+- [docker compose 이용해서 환경설정 하기](#docker-compose-이용해서-환경설정-하기)
+- [Docker hub 에서 이미지 가져와서 실행하기](#docker-hub-에서-이미지-가져와서-실행하기)
 
-#### Docker 로 프로젝트 실행하기.
-
-1. docker 가 다운로되어 있어야합니다.
-2. 프리온보딩 프로젝트를 위한 폴더 생성
-   ```
-   mkdir cono-preonboarding
-   ```
-3. 폴더 cono-preonboarding 로 이동
-
-   ```
-   cd cono-preonboarding
-   ```
-
-4. docker-compose.yml 파일 생성
-
-   ```
-   touch docker-compose.yml
-   ```
-
-5. cono-preonboarding 폴더에서 , `docker-compose.yml` 파일에 아래 코드를 생성
-
-   ```
-   version: '3.7'
-   services:
-    cono-mysql:
-      container_name: cono-mysql
-      image: everydaycono/wanted-preonboarding
-      environment:
-        MYSQL_ROOT_PASSWORD: rootpassword123
-        MYSQL_DATABASE: wanted-pre-onboarding
-        MYSQL_USER: boarding
-        MYSQL_PASSWORD: password123
-      ports:
-        - '3306:3306'
-      networks:
-        - net_pre
-    cono-app:
-      container_name: cono-app
-      image: everydaycono/wanted-preonboarding-app
-      env_file:
-        - .env
-      ports:
-        - '8000:8000'
-      restart: on-failure:6
-      depends_on:
-        - cono-mysql
-      networks:
-        - net_pre
-   networks:
-    net_pre:
-
-   ```
-
-6. .env 파일 생성 (docker-compose.yml 과 같은 파일위치.)
-
-   ```
-   touch .env
-   ```
-
-7. .env 파일 에 아래 코드 복사
-
-   ```
-   # DATABASE_URL= "mysql://{USERNAME}:{ROOPASSWORD}@{HOST}:{PORT}/{DBBANE}"
-   #DATABASE_URL 을 위처럼 작성하셔야 합니다.
-
-   DATABASE_URL= "mysql://root:rootpassword123@cono-mysql:3306/wanted-pre-onboarding"
-
-   PORT=8000
-
-   JWT_SECRET="JWT SECRET"
-   ```
-
-8. docker hub 에서 이미지 가져오기 docker pull images [docker hub 링크](https://hub.docker.com/u/everydaycono)
-
-   1.node.js 이미지 docker pull
-
-   ```
-   docker pull everydaycono/wanted-preonboarding-app
-   ```
-
-   2.mysql8.0 이미지 docker pull
-
-   ```
-   docker pull everydaycono/wanted-preonboarding
-   ```
-
-9. DB 실행
-
-   ```
-   docker compose up cono-mysql
-   ```
-
-10. 어플리케이션 실행
-
-    ```
-    docker compose up cono-app
-    ```
-
-    터미널에 아래 문구가 뜨는것을 볼수있습니다.
-
-    `Server is running on port 8000 now!`
-
-#### node.js
+## Node.js 환경 으로 프로젝트 실행하기
 
 1.  repository 복제
 
@@ -131,15 +30,17 @@
     cp .env.example .env
     ```
 
-4.  프로젝트를 실행시키기 위해서는 .env 파일에 아래 environment variables 들이 필요합니다.
+4.  프로젝트를 실행시키기 위해서는 .env 파일에 아래 environment variables 들이 필요합니다. 본인 mysql 을 연결 하면됩니다.
 
     ```.env
-    DATABASE_URL= "mysql://{USERNAME}:{ROOPASSWORD}@{HOST}:{PORT}/{DBBANE}"
+    DATABASE_URL= "mysql://{USERNAME}:{ROOPASSWORD}@localhost:3306/{DBBANE}"
 
     PORT=8000
 
     JWT_SECRET="JWT SECRET"
     ```
+
+    _mysql DBNAME 에 해당하는 database 가 필요합니다._
 
 5.  프리즈마 마이그레이션 명령어
 
@@ -178,6 +79,197 @@
     ```
     Server is not running
     ```
+
+## docker compose 이용해서 환경설정 하기
+
+1. docker 가 다운로되어 있어야합니다.
+2. repository 복제
+
+   ```bash
+   git clone https://github.com/everydaycono/pre-onboarding.git
+   ```
+
+3. docker-compose.yml 파일 생성
+
+   ```
+   touch docker-compose.yml
+   ```
+
+4. repository 를 복제한 폴더에서 , `docker-compose.yml` 파일에 아래 코드를 생성
+
+   ```
+   version: '3.7'
+   services:
+     cono-mysql:
+       container_name: cono-mysql
+       build:
+         context: ./db
+       environment:
+         MYSQL_ROOT_PASSWORD: rootpassword123
+         MYSQL_DATABASE: wanted-pre-onboarding
+         MYSQL_USER: boarding
+         MYSQL_PASSWORD: password123
+       ports:
+         - '3306:3306'
+       networks:
+         - net_pre
+     cono-app:
+       container_name: cono-app
+       build:
+         context: .
+       env_file:
+         - .env
+       ports:
+         - '8000:8000'
+       restart: on-failure:6
+       depends_on:
+         - cono-mysql
+       networks:
+         - net_pre
+   networks:
+     net_pre:
+   ```
+
+5. .env 파일 생성
+
+   ```
+   touch .env
+   ```
+
+6. .env 파일에 아래 코드 생성
+
+   ```
+   DATABASE_URL="mysql://root:rootpassword123@cono-mysql:3306/wanted-pre-onboarding"
+
+   PORT=8000
+
+   JWT_SECRET="JWT SECRET"
+   ```
+
+7. DB 이미지 생성 _docker-compose 명령어_
+
+   ```
+     docker compose up cono-mysql
+   ```
+
+8. app 이미지 생성 _docker-compose 명령어_
+
+   ```
+     docker compose up cono-app
+   ```
+
+   터미널에 아래 문구가 뜨는것을 볼수있습니다.
+
+   `Server is running on port 8000 now!`
+
+## Docker hub 에서 이미지 가져와서 실행하기
+
+1. docker 가 다운로되어 있어야합니다.
+2. 프리온보딩 프로젝트를 위한 폴더 생성
+   ```
+   mkdir cono-preonboarding
+   ```
+3. 폴더 cono-preonboarding 로 이동
+
+   ```
+   cd cono-preonboarding
+   ```
+
+4. docker-compose.yml 파일 생성
+
+   ```
+   touch docker-compose.yml
+   ```
+
+5. cono-preonboarding 폴더에서 , `docker-compose.yml` 파일에 아래 코드를 생성
+
+   ```
+   version: '3.7'
+   services:
+     cono-mysql:
+       container_name: cono-mysql
+       image: everydaycono/wanted-preonboarding
+       environment:
+         MYSQL_ROOT_PASSWORD: rootpassword123
+         MYSQL_DATABASE: wanted-pre-onboarding
+         MYSQL_USER: boarding
+         MYSQL_PASSWORD: password123
+       ports:
+         - '3306:3306'
+       networks:
+         - net_pre
+     cono-app:
+       container_name: cono-app
+       image: everydaycono/wanted-preonboarding-app
+       env_file:
+         - .env
+       ports:
+         - '8000:8000'
+       restart: on-failure:6
+       depends_on:
+         - cono-mysql
+       networks:
+         - net_pre
+   networks:
+     net_pre:
+   ```
+
+6. .env 파일 생성 (docker-compose.yml 과 같은 파일위치.)
+
+   ```
+   touch .env
+   ```
+
+7. .env 파일 에 아래 코드 복사
+
+   ```
+   # DATABASE_URL= "mysql://{USERNAME}:{ROOPASSWORD}@{HOST}:{PORT}/{DBBANE}"
+
+   #DATABASE_URL 을 위처럼 작성하셔야 합니다.
+
+   DATABASE_URL= "mysql://root:rootpassword123@cono-mysql:3306/wanted-pre-onboarding"
+
+   PORT=8000
+
+   JWT_SECRET="JWT SECRET"
+
+   ```
+
+8. docker hub 에서 이미지 가져오기 docker pull images [docker hub 링크](https://hub.docker.com/u/everydaycono)
+
+   1.node.js 이미지 docker pull
+
+   ```
+
+   docker pull everydaycono/wanted-preonboarding-app
+
+   ```
+
+   2.mysql8.0 이미지 docker pull
+
+   ```
+
+   docker pull everydaycono/wanted-preonboarding
+
+   ```
+
+9. DB 실행
+
+   ```
+
+   docker compose up cono-mysql
+
+   ```
+
+10. 어플리케이션 실행
+
+    ```
+    docker compose up cono-app
+    ```
+
+    터미널에 아래 문구가 뜨는것을 볼수있습니다.
+
+    `Server is running on port 8000 now!`
 
 ## 데이터베이스 테이블 구조
 
@@ -241,7 +333,7 @@
 ### 회원가입 (Signup)
 
 ```http
-  POST /api/auth/signup
+POST /api/auth/signup
 ```
 
 요청 바디(request body)는 다음과 같은 필드를 포함해야 합니다:
